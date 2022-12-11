@@ -2,15 +2,14 @@ package com.github.phgeorgiev.day03;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.github.phgeorgiev.BaseTestUtils;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
-public class RucksackReorganizationTest {
+public class RucksackReorganizationTest extends BaseTestUtils {
 
-  static String input() throws IOException {
-    return Files.readString(Path.of("src/test/resources/day03/input.txt"));
+  protected Integer getDay() {
+    return 3;
   }
 
   @Test

@@ -2,15 +2,14 @@ package com.github.phgeorgiev.day01;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.github.phgeorgiev.BaseTestUtils;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
-public class CalorieCounterTest {
+public class CalorieCounterTest extends BaseTestUtils {
 
-  static String input() throws IOException {
-    return Files.readString(Path.of("src/test/resources/day01/input.txt"));
+  protected Integer getDay() {
+    return 1;
   }
 
   @Test
