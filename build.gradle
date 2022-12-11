@@ -1,3 +1,5 @@
+import com.github.phgeorgiev.InitDayTask
+
 plugins {
     id 'java'
 }
@@ -17,4 +19,9 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.register('initDay', InitDayTask) {
+    day = project.getProperty('day')
+    session = project.getProperty('session')
 }

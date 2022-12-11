@@ -4,3 +4,12 @@
 ![](https://img.shields.io/badge/stars%20⭐-12-yellow)
 
 [Advent of Code](https://adventofcode.com/2022) solutions implemented with Java 17 and Junit 5.
+
+## Download puzzle input
+
+ - `aoc_day` - the day to solve
+ - `aoc_session` - AoC session id, you can get it from AoC cookie `session`  
+
+```shell
+./gradle initDay -Pday={aoc_day} -Psession={aoc_session}
+```
