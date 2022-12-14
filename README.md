@@ -1,7 +1,7 @@
 # Advent Of Code 2022 Solutions
 
-![](https://img.shields.io/badge/days%20completed-7-red)
-![](https://img.shields.io/badge/stars%20⭐-14-yellow)
+![](https://img.shields.io/badge/days%20completed-8-red)
+![](https://img.shields.io/badge/stars%20⭐-16-yellow)
 
 [Advent of Code](https://adventofcode.com/2022) solutions implemented with Java 17 and Junit 5.
 
