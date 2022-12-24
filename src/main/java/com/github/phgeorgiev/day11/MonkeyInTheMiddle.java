@@ -63,16 +63,16 @@ public class MonkeyInTheMiddle {
     }
   }
 
-  public long getMonkeyBusiness() {
-    for (int i = 0; i < 20; i++) {
-      monkeys.forEach(Monkey::inspectItems);
+  public long getMonkeyBusiness(int rounds, int interesDecreaser) {
+    for (int i = 0; i < rounds; i++) {
+      monkeys.forEach(monkey -> monkey.inspectItems(interesDecreaser));
     }
 
     return monkeys.stream()
         .map(Monkey::getInspectionCount)
         .sorted(Comparator.reverseOrder())
         .limit(2)
-        .mapToInt(Integer::intValue)
+        .mapToLong(Long::valueOf)
         .reduce((arr, value) -> arr * value)
         .orElse(0);
   }
@@ -100,21 +100,25 @@ public class MonkeyInTheMiddle {
       items.add(item);
     }
 
-    public void inspectItems() {
+    public void inspectItems(int interesDecreaser) {
       while (!items.isEmpty()) {
         Long item = items.pollFirst();
         if (item == null) {
           continue;
         }
 
-        updateItemWorryLevel(item);
+        updateItemWorryLevel(item, interesDecreaser);
         inspectionCount++;
       }
     }
 
-    private void updateItemWorryLevel(Long item) {
-      long newWorryLevel = operation.calculate(item) / 3;
-      monkeys.get(test.getNextMonkey(newWorryLevel)).addItem(newWorryLevel);
+    private void updateItemWorryLevel(Long item, int interesDecreaser) {
+      long gcd = monkeys.stream()
+          .mapToLong(monkey -> monkey.test.getDivisible())
+          .reduce((a,b) -> a*b)
+          .orElse(0L);
+      long newWorryLevel = operation.calculate(item) / interesDecreaser;
+      monkeys.get(test.getNextMonkey(newWorryLevel)).addItem(newWorryLevel % gcd);
     }
 
     public int getInspectionCount() {

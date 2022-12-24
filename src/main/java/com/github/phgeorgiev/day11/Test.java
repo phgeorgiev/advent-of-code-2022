@@ -12,7 +12,11 @@ public class Test {
     this.falseMonkeyNumber = falseMonkeyNumber;
   }
 
-  public int getNextMonkey(long item) {
+  public int getNextMonkey(double item) {
     return item % divisible == 0 ? trueMonkeyNumber : falseMonkeyNumber;
+  }
+
+  public int getDivisible() {
+    return divisible;
   }
 }
