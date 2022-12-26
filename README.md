@@ -11,5 +11,5 @@
  - `aoc_session` - AoC session id, you can get it from AoC cookie `session`  
 
 ```shell
-./gradle initDay -Pday={aoc_day} -Psession={aoc_session}
+./gradlew initDay -Pday={aoc_day} -Psession={aoc_session}
 ```
