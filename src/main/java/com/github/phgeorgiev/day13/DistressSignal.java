@@ -1,5 +1,6 @@
 package com.github.phgeorgiev.day13;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.json.JSONArray;
@@ -24,6 +25,22 @@ public class DistressSignal {
     }
 
     return indicesSum;
+  }
+
+  public int findDecoderKey() {
+    List<Pair> newList = new ArrayList<>(pairs);
+    List<Object> dividerPacket1 = List.of(List.of(2));
+    List<Object> dividerPacket2 = List.of(List.of(6));
+    newList.add(new Pair(dividerPacket1, dividerPacket2));
+    List<List<Object>> packets = new ArrayList<>();
+    for (Pair pair : newList) {
+      packets.add(pair.left());
+      packets.add(pair.right());
+    }
+
+    packets.sort(this::compareSignals);
+
+    return (packets.indexOf(dividerPacket1) + 1) * (packets.indexOf(dividerPacket2) + 1);
   }
 
   private int compareSignals(List<Object> left, List<Object> right) {
