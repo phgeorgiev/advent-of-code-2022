@@ -1,35 +1,31 @@
 package com.github.phgeorgiev.day14;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.Range;
 
 public class RegolithReservoir {
 
-  private final Set<Point> sands = new HashSet<>();
-  private final List<RocksLine> rocks;
+  private final boolean[][] visited;
 
   private int lowestRock = 0;
 
   public RegolithReservoir(String input) {
-    rocks = Arrays.stream(input.split("\n"))
-        .map(line -> {
+    visited = new boolean[1_000][1_000];
+    Arrays.stream(input.split("\n"))
+        .forEach(line -> {
           String[] coordinates = line.split("->");
-          List<RocksLine> lineRocks = new ArrayList<>();
           for (int i = 0; i < coordinates.length - 1; i++) {
             String[] start = coordinates[i].trim().split(",");
             String[] end = coordinates[i + 1].trim().split(",");
 
-            lineRocks.add(new RocksLine(
-                    new Point(Integer.parseInt(start[0]), Integer.parseInt(start[1])),
-                    new Point(Integer.parseInt(end[0]), Integer.parseInt(end[1]))
-                )
-            );
+            Range<Integer> xRange = Range.between(Integer.parseInt(start[0]), Integer.parseInt(end[0]));
+            Range<Integer> yRange = Range.between(Integer.parseInt(start[1]), Integer.parseInt(end[1]));
+
+            for (int y = yRange.getMinimum(); y <= yRange.getMaximum(); y++) {
+              for (int x = xRange.getMinimum(); x <= xRange.getMaximum(); x++) {
+                visited[y][x] = true;
+              }
+            }
 
             if (lowestRock < Integer.parseInt(start[1])) {
               lowestRock = Integer.parseInt(start[1]);
@@ -39,67 +35,52 @@ public class RegolithReservoir {
               lowestRock = Integer.parseInt(end[1]);
             }
           }
+        });
 
-          return lineRocks;
-        })
-        .flatMap(Collection::stream)
-        .collect(Collectors.toList());
+    for (int x = 0; x < visited[0].length; x++) {
+      visited[lowestRock + 2][x] = true;
+    }
   }
 
-  public int getRestingSandsCount() {
+  public int getRestingSandsCount(boolean hasFloor) {
     int counter = 0;
-    while (dropSand()) {
+    while (dropSand(hasFloor)) {
       counter++;
     }
 
     return counter;
   }
 
-  private boolean dropSand() {
+  private boolean dropSand(boolean hasFloor) {
     int x = 500;
     int y = 0;
 
+    if (visited[y][x]) {
+      return false;
+    }
+
     while (true) {
-      if (y > lowestRock) {
+      if (!hasFloor && y > lowestRock) {
         return false;
       }
 
-      if (isNextPositionFree(x, y + 1)) {
+      if (!visited[y + 1][x]) {
         y++;
         continue;
       }
 
-      if (isNextPositionFree(x - 1, y + 1)) {
+      if (!visited[y + 1][x - 1]) {
         x -= 1;
         continue;
       }
 
-      if (isNextPositionFree(x + 1, y + 1)) {
+      if (!visited[y + 1][x + 1]) {
         x += 1;
         continue;
       }
 
-      sands.add(new Point(x, y));
+      visited[y][x] = true;
       return true;
     }
   }
-
-  private boolean isNextPositionFree(int x, int y) {
-    if (sands.contains(new Point(x, y))) {
-      return false;
-    }
-
-    for (RocksLine rocksLine : rocks) {
-      if (Range.between(rocksLine.start().x(), rocksLine.end().x()).contains(x)
-          && Range.between(rocksLine.start().y(), rocksLine.end().y()).contains(y)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  record Point(int x, int y) { }
-
-  record RocksLine(Point start, Point end) { }
 }

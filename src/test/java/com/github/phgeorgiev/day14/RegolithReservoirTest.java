@@ -20,11 +20,26 @@ public class RegolithReservoirTest extends BaseTestUtils {
         503,4 -> 502,4 -> 502,9 -> 494,9
         """;
 
-    assertEquals(24, new RegolithReservoir(input).getRestingSandsCount());
+    assertEquals(24, new RegolithReservoir(input).getRestingSandsCount(false));
+  }
+
+  @Test
+  void shouldFindAllRoomRestingSandsCount() {
+    String input = """
+        498,4 -> 498,6 -> 496,6
+        503,4 -> 502,4 -> 502,9 -> 494,9
+        """;
+
+    assertEquals(93, new RegolithReservoir(input).getRestingSandsCount(true));
   }
 
   @Test
   void shouldFindRestingSandsCountFromInput() throws IOException {
-    assertEquals(994, new RegolithReservoir(input()).getRestingSandsCount());
+    assertEquals(994, new RegolithReservoir(input()).getRestingSandsCount(false));
+  }
+
+  @Test
+  void shouldFindAllRoomRestingSandsCountFromInput() throws IOException {
+    assertEquals(994, new RegolithReservoir(input()).getRestingSandsCount(true));
   }
 }
